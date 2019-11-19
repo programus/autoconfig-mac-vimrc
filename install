@@ -3,6 +3,10 @@
 
 [[ -d ~/.vim ]] || mkdir ~/.vim;
 
+[[ -d ~/.vim/.bkup ]] || mkdir ~/.vim/.bkup;
+[[ -d ~/.vim/.swap ]] || mkdir ~/.vim/.swap;
+[[ -d ~/.vim/.undo ]] || mkdir ~/.vim/.undo;
+
 # tmp dir
 [[ -d ~/v-tmp ]] || mkdir ~/v-tmp;
 

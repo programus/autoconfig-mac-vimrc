@@ -144,7 +144,7 @@
   set smartcase
   set encoding=utf-8
   set termencoding=utf-8
-  set fileencodings=utf-8,gbk,utf-16le,cp1252,iso-8859-15,ucs-bom
+  set fileencodings=utf-8,cp932,gbk,utf-16le,cp1252,iso-8859-15,ucs-bom
   set fileformats=unix,dos,mac
   set linespace=0             " No extra spaces between rows
   set showmatch               " Show matching brackets/parenthesis
@@ -156,9 +156,12 @@
       set clipboard=unnamed
     endif
   endif
-  set nobackup
-  set noswapfile
-  set nowritebackup
+  set backupdir=~/.vim/.bkup/,/tmp//
+  set directory=~/.vim/.swap/,/tmp//
+  set undodir=~/.vim/.undo/,/tmp//
+  " set nobackup
+  " set noswapfile
+  " set nowritebackup
   set iskeyword-=_,.,=,-,:,
   set foldmethod=indent
   set tabstop=2  softtabstop=2 shiftwidth=2 expandtab
@@ -250,7 +253,8 @@
   if v:version > 703 || v:version == 703 && has("patch541")
     set formatoptions+=j " Delete comment chars when join comment lines
   endif
-  set formatoptions-=l " wrap long lines
+  " set formatoptions-=l " wrap long lines
+  set formatoptions+=l " don't wrap long lines
   set wrapmargin=2 " 2 chars wrap margin from the right window border, hard wrap
   "set conceallevel=0
   set list
