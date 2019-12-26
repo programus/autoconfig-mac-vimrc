@@ -129,6 +129,8 @@
     "Plugin 'majutsushi/tagbar'
     "Plugin 'garyburd/go-explorer'
     "Plugin 'zchee/deoplete-go'
+    Plugin 'chrisbra/csv.vim'
+    Plugin 'vim-scripts/mru.vim'
   "}
   call vundle#end()
 "}
@@ -409,6 +411,7 @@
     let g:airline_left_alt_sep = '⮁'
     let g:airline_right_sep = '⮂'
     let g:airline_right_alt_sep = '⮃'
+    let g:airline_section_gutter = '%=[u%04.4B]'
 
   "scrooloose/nerdtree
     nnoremap <leader>ne :NERDTreeFind<CR>
@@ -425,23 +428,16 @@
   "mhinz/vim-startify
     noremap <Leader>s :Startify<CR>
     let g:startify_list_order = [
-          \ ['   Bookmarks'],     'bookmarks',
           \ ['   MRU'],           'files' ,
           \ ['   MRU '.getcwd()], 'dir',
           \ ['   Sessions'],      'sessions',
+          \ ['   Bookmarks'],     'bookmarks',
           \ ]
     let g:startify_bookmarks = [
-          \ '~/projects/assets/daily.md',
-          \ '~/projects/assets/',
-          \ '~/downloads/',
-          \ '~/projects/node/',
-          \  '~/projects/daily/',
-          \ '~/projects/daily/fe-learning/',
-          \  '~/projects/assets/item-detail/',
-          \ '~/projects/assets/noscripter.github.io/',
-          \ '~/projects/assets/noscripter.github.io/_posts/',
-          \ '~/projects/assets/noscripter.github.io/lab/',
-          \  '~/projects/daily/fe-learning/playground/']
+          \ '~/.vimrc',
+          \ '~/Downloads/',
+          \ '~/git-repos',
+          \ ]
     let g:startify_change_to_dir          = 0
     let g:startify_enable_special         = 0
     let g:startify_files_number           = 8
@@ -619,6 +615,9 @@
         \ 'jump':  1,
         \ }
 
+  "vim-scripts/mru.vim
+    command Recent MRU
+
 "}
 
 "{helper functions
@@ -763,9 +762,28 @@
       endif
     endfunction
     noremap <leader>bg :call ToggleBG()<CR>
+
+  "Toggle CSV Highlight Columns
+    function! AutoHiColumn()
+      if exists("g:csv_highlight_column") && g:csv_highlight_column == 'y'
+        unlet g:csv_highlight_column
+        call timer_start(0, {-> :CSVInit})
+      else
+        let g:csv_highlight_column = 'y'
+        :CSVInit
+      endif
+    endfunction
+    command AutoHiColumn :call AutoHiColumn()
+    command CSVAutoHiColumn :call AutoHiColumn()
 "}
 
 "{auto commands
+  " auto numbertoggle
+  augroup numbertoggle
+    autocmd!
+    autocmd BufEnter,FocusGained,InsertLeave  * set relativenumber
+    autocmd BufLeave,FocusLost,InsertEnter    * set norelativenumber
+  augroup END
   " Return to last edit position when opening files (You want this!)
   autocmd BufReadPost *
        \ if line("'\"") > 0 && line("'\"") <= line("$") |
